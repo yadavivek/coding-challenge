@@ -12,7 +12,7 @@ class BootStrap {
 
         new UserRole(user: user, role: Role.findByAuthority(RoleEnum.ROLE_USER.name())).save()*/
 
-        /*(1..5).each {
+        (1..5).each {
             Customer customer = Customer.get(it)
             if(!customer) {
                 customer = new Customer(name: "vivek").save()
@@ -24,7 +24,7 @@ class BootStrap {
                     new Phone(number: number, customer: customer).save()
                 }
             }
-        }*/
+        }
     }
     def destroy = {
     }
