@@ -100,7 +100,7 @@
                             <g:message code="shorten.url.label"/>
                         </g:link>
                     </li>
-                    %{--<li class="active">
+                    <li class="active">
                         <g:link controller="upload">
                             <i class="icon-home"></i>
                             <g:message code="upload.file.label"/>
@@ -111,7 +111,7 @@
                             <i class="icon-home"></i>
                             <g:message code="convert.temperature.label"/>
                         </g:link>
-                    </li>--}%
+                    </li>
                 </ul>
             </sec:ifLoggedIn>
         </nav>
