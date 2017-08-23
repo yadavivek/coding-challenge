@@ -9,10 +9,10 @@
             <asset:image src="custom/spinner-gif-17.gif"/>
         </div>
 
-        <div class="item d-flex align-items-center ${result ? 'alert-success' : 'alert-danger'}">
+        <div class="item d-flex align-items-center">
             <div class="text">
                 <g:if test='${result}'>
-                    <div class='alert-success'>${result}</div>
+                    <div>${result}</div>
                 </g:if>
                 <g:render template="../template/message" model="[errors: errors]"/>
             </div>
