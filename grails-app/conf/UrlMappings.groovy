@@ -11,8 +11,8 @@ class UrlMappings {
         "500"(view: '/error')
         "404"(controller: "errors", action: "notFound")
 
-//        "/phone"(controller: 'phone')
-//        "/phone/$customerId"(controller: 'phone')
-//        "/phone/activate/$number"(controller: 'phone', action: 'activate')
+        "/phone"(controller: 'phone')
+        "/phone/$customerId"(controller: 'phone')
+        "/phone/activate/$number"(controller: 'phone', action: 'activate')
     }
 }
