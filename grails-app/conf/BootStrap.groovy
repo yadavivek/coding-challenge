@@ -4,13 +4,13 @@ class BootStrap {
 
     def init = { servletContext ->
 
-        /*RoleEnum.values().each {
+        RoleEnum.values().each {
             new Role(authority: it).save()
         }
 
         User user = new User(username: "vivek", password: "yadav").save()
 
-        new UserRole(user: user, role: Role.findByAuthority(RoleEnum.ROLE_USER.name())).save()*/
+        new UserRole(user: user, role: Role.findByAuthority(RoleEnum.ROLE_USER.name())).save()
 
         /*(1..5).each {
             Customer customer = Customer.get(it)
