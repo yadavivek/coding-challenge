@@ -126,12 +126,11 @@ grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.vivek.User
 grails.plugin.springsecurity.authority.className = 'com.vivek.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/'                    : ['permitAll'],
-//	'/**':                              ['permitAll'],
         '/dbconsole/*'         : ['permitAll'],
         '/shorten/*'           : ['ROLE_USER'],
-//        '/upload/*'            : ['ROLE_USER'],
         '/phone/**'             : ['permitAll'],
         '/convertTemperature/*': ['ROLE_USER'],
+        '/upload/*'            : ['ROLE_USER'],
         '/register/*'          : ['permitAll'],
         '/user/**'             : ['permitAll'],
         '/index'               : ['permitAll'],
