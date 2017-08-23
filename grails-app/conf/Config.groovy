@@ -16,19 +16,19 @@ grails.project.groupId = appName // change this to alter the default package nam
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
 grails.mime.disable.accept.header.userAgents = ['Gecko', 'WebKit', 'Presto', 'Trident']
 grails.mime.types = [ // the first one is the default format
-    all:           '*/*', // 'all' maps to '*' or the first available format in withFormat
-    atom:          'application/atom+xml',
-    css:           'text/css',
-    csv:           'text/csv',
-    form:          'application/x-www-form-urlencoded',
-    html:          ['text/html','application/xhtml+xml'],
-    js:            'text/javascript',
-    json:          ['application/json', 'text/json'],
-    multipartForm: 'multipart/form-data',
-    rss:           'application/rss+xml',
-    text:          'text/plain',
-    hal:           ['application/hal+json','application/hal+xml'],
-    xml:           ['text/xml', 'application/xml']
+                      all          : '*/*', // 'all' maps to '*' or the first available format in withFormat
+                      atom         : 'application/atom+xml',
+                      css          : 'text/css',
+                      csv          : 'text/csv',
+                      form         : 'application/x-www-form-urlencoded',
+                      html         : ['text/html', 'application/xhtml+xml'],
+                      js           : 'text/javascript',
+                      json         : ['application/json', 'text/json'],
+                      multipartForm: 'multipart/form-data',
+                      rss          : 'application/rss+xml',
+                      text         : 'text/plain',
+                      hal          : ['application/hal+json', 'application/hal+xml'],
+                      xml          : ['text/xml', 'application/xml']
 ]
 
 // URL Mapping Cache Max Size, defaults to 5000
@@ -71,7 +71,7 @@ grails.enable.native2ascii = true
 // packages to include in Spring bean scanning
 grails.spring.bean.packages = []
 // whether to disable processing of multi part requests
-grails.web.disable.multipart=false
+grails.web.disable.multipart = false
 
 // request parameters to mask when logging exceptions
 grails.exceptionresolver.params.exclude = ['password']
@@ -85,9 +85,15 @@ grails.hibernate.pass.readonly = false
 // configure passing read-only to OSIV session by default, requires "singleSession = false" OSIV mode
 grails.hibernate.osiv.readonly = false
 
+grails.plugin.springsecurity.logout.postOnly = false
+logout.afterLogoutUrl = "/"
+
+grails.assets.plugin."plugin-name".includes = ["fonts/*", "img/*"]
+
 environments {
     development {
         grails.logging.jul.usebridge = true
+//        grails.serverURL = "http://www.vivek.com"
     }
     production {
         grails.logging.jul.usebridge = false
@@ -95,23 +101,88 @@ environments {
     }
 }
 
+grails.google.api.key = "AIzaSyBYg7LL0yCopLOu2yhKR7h6KcJenBbWhGM"
+grails.google.api.url = "https://www.googleapis.com/urlshortener/v1/url"
+
 // log4j configuration
 log4j.main = {
+
+    error 'org.codehaus.groovy.grails.web.servlet',        // controllers
+            'org.codehaus.groovy.grails.web.pages',          // GSP
+            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+            'org.codehaus.groovy.grails.commons',            // core / classloading
+            'org.codehaus.groovy.grails.plugins',            // plugins
+            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate'
+}
+
+// Added by the Spring Security Core plugin:
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.vivek.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.vivek.UserRole'
+grails.plugin.springsecurity.authority.className = 'com.vivek.Role'
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+        '/'                    : ['permitAll'],
+//	'/**':                              ['permitAll'],
+        '/dbconsole/*'         : ['permitAll'],
+        '/shorten/*'           : ['ROLE_USER'],
+//        '/upload/*'            : ['ROLE_USER'],
+//        '/phone/**'             : ['permitAll'],
+//        '/convertTemperature/*': ['ROLE_USER'],
+        '/register/*'          : ['permitAll'],
+        '/user/**'             : ['permitAll'],
+        '/index'               : ['permitAll'],
+        '/index.gsp'           : ['permitAll'],
+        '/assets/**'           : ['permitAll'],
+        '/**/js/**'            : ['permitAll'],
+        '/**/css/**'           : ['permitAll'],
+        '/**/images/**'        : ['permitAll'],
+        '/**/img/**'           : ['permitAll'],
+        '/**/favicon.ico'      : ['permitAll']
+]
+
+// log4j configuration
+String catalinaBase = System.properties.getProperty('catalina.base')
+String logDir = "${catalinaBase}/CodingLogLogs/"
+log4j = {
     // Example of changing the log pattern for the default console appender:
     //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+    appenders {
+        console name: 'stdout', layout: pattern(conversionPattern: '%-5p  %c %d{dd.MM.yyyy HH:mm:ss} -- %m%n')
+    }
 
-    error  'org.codehaus.groovy.grails.web.servlet',        // controllers
-           'org.codehaus.groovy.grails.web.pages',          // GSP
-           'org.codehaus.groovy.grails.web.sitemesh',       // layouts
-           'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
-           'org.codehaus.groovy.grails.web.mapping',        // URL mapping
-           'org.codehaus.groovy.grails.commons',            // core / classloading
-           'org.codehaus.groovy.grails.plugins',            // plugins
-           'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
-           'org.springframework',
-           'org.hibernate',
-           'net.sf.ehcache.hibernate'
+    debug 'grails.app'
+
+    info "grails.app.filters",
+            "grails.app.controllers",
+            "grails.app.services",
+            "grails.app.domains"
+    error 'org.codehaus.groovy.grails.web.servlet',        // controllers
+            'org.codehaus.groovy.grails.web.pages',          // GSP
+            'org.codehaus.groovy.grails.web.sitemesh',       // layouts
+            'org.codehaus.groovy.grails.web.mapping.filter', // URL mapping
+            'org.codehaus.groovy.grails.web.mapping',        // URL mapping
+            'org.codehaus.groovy.grails.commons',            // core / classloading
+            'org.codehaus.groovy.grails.plugins',            // plugins
+            'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
+            'org.springframework',
+            'org.hibernate',
+            'net.sf.ehcache.hibernate',
+            "grails.app.filters",
+            "grails.app.controllers",
+            "grails.app.services",
+            "grails.app.domains",
+            "com.vivek"
+
+    environments {
+        development {
+            debug "com.vivek",
+                    "grails.app.controllers",
+                    "grails.app.services",
+                    "grails.app.domains"
+        }
+    }
 }

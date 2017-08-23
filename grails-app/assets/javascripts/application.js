@@ -6,15 +6,35 @@
 // to create separate JavaScript files as needed.
 //
 //= require jquery
+//= require front.js
+//= require tether.min.js
 //= require_tree .
 //= require_self
 
 if (typeof jQuery !== 'undefined') {
-	(function($) {
-		$('#spinner').ajaxStart(function() {
-			$(this).fadeIn();
-		}).ajaxStop(function() {
-			$(this).fadeOut();
-		});
-	})(jQuery);
+    (function ($) {
+        $('#spinner').ajaxStart(function () {
+            $(this).fadeIn();
+        }).ajaxStop(function () {
+            $(this).fadeOut();
+        });
+    })(jQuery);
 }
+
+function addField(urlType) {
+    $("#urlType").val(urlType);
+}
+
+var showSpinner = function () {
+    $("#spinner").fadeIn('fast');
+};
+
+// Global handlers for AJAX events
+$(document)
+    .on("ajaxSend", showSpinner)
+    .on("ajaxStop", function () {
+        $("#spinner").fadeOut('fast');
+    })
+    .on("ajaxError", function (event, jqxhr, settings, exception) {
+        $("#spinner").hide();
+    });
