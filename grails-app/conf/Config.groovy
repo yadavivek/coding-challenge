@@ -130,7 +130,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
         '/dbconsole/*'         : ['permitAll'],
         '/shorten/*'           : ['ROLE_USER'],
 //        '/upload/*'            : ['ROLE_USER'],
-//        '/phone/**'             : ['permitAll'],
+        '/phone/**'             : ['permitAll'],
 //        '/convertTemperature/*': ['ROLE_USER'],
         '/register/*'          : ['permitAll'],
         '/user/**'             : ['permitAll'],
