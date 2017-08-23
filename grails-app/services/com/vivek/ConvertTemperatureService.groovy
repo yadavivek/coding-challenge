@@ -5,6 +5,8 @@ import com.vivek.exception.CodingException
 import grails.transaction.Transactional
 import groovy.util.logging.Log4j
 
+import javax.xml.ws.WebServiceException
+
 @Transactional
 @Log4j
 class ConvertTemperatureService {
@@ -23,11 +25,14 @@ class ConvertTemperatureService {
         }
         ConvertTemperature convertTemperature = new ConvertTemperature()
         log.info("convertTempCO.fromUnit.value  " + convertTempCO.fromUnit.value)
-        log.info("convertTempCO.fromUnit.value  " + convertTempCO.fromUnit.value.getClass())
-        log.info("convertTempCO.fromUnit.value with string  " + TemperatureUnit.fromValue("degreeCelsius"))
-        log.info("convertTempCO.fromUnit.value  " + TemperatureUnit.fromValue(convertTempCO.fromUnit.value))
-        double result = convertTemperature.getConvertTemperatureSoap().convertTemp(convertTempCO.temperature, TemperatureUnit.fromValue(convertTempCO.fromUnit.value), TemperatureUnit.fromValue(convertTempCO.toUnit.value));
-        log.info("Result from Soap API $result")
-        return result
+        double result
+        try {
+            result = convertTemperature.getConvertTemperatureSoap().convertTemp(convertTempCO.temperature, TemperatureUnit.fromValue(convertTempCO.fromUnit.value), TemperatureUnit.fromValue(convertTempCO.toUnit.value));
+            log.info("Result from Soap API $result")
+            return result
+        } catch (Exception ex) {
+            log.error("Unable to hit on wsdl. ex: $ex.message")
+            throw new CodingException([messageSource.getMessage("something.went.wrong", null, Locale.default)].toString())
+        }
     }
 }
